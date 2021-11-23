@@ -1,36 +1,66 @@
 import RPi.GPIO as GPIO
-import asyncio
+from time import sleep
 
 class RLDL_GPIO:
-    def __init__(self):
-        self.outputPins = {
-            'triggerRelay' : 23,
-            'motorRelay' : 24,
-            'neopixelGrid' : 25,
-        }
-        self.inputPins = {
-            'buttonPin' : 22,
-        }
-        for pin in self.outputPins:
-            GPIO.setup(self.outputPins[pin], GPIO.OUT)
-        for pin in self.inputPins:
-            GPIO.setup(self.inputPins[pin], GPIO.IN)
-    
-    async def fire_nerf_gun(self):
-        # Spin motor, fire, stop spinning.
-        GPIO.output(self.outputPins['motorRelay'], GPIO.HIGH)
-        await asyncio.sleep(1)
-        GPIO.output(self.outputPins['triggerRelay'], GPIO.HIGH)
-        await asyncio.sleep(0.4)
-        GPIO.output(self.outputPins['triggerRelay'], GPIO.LOW)
-        GPIO.output(self.outputPins['motorRelay'], GPIO.LOW)
+	def __init__(self):
+		self.outputPins = {
+			'buttonLight' : 22,
+			'triggerRelay' : 23,
+			'motorRelay' : 24,
+			'neopixelGrid' : 25,
+		}
+		self.inputPins = {
+			'buttonPin' : 10,
+		}
+		self.states = {
+			'buttonLight' : False,
+			'motorRelay' : False,
+			'triggerRelay' : False,
+		}
+		GPIO.setmode(GPIO.BCM)
+		for pin in self.outputPins:
+			GPIO.setup(self.outputPins[pin], GPIO.OUT)
+		for pin in self.inputPins:
+			GPIO.setup(self.inputPins[pin], GPIO.IN)
+	
+	def changeState(self, key, newState, value):
+		if key in self.states.keys():
+			self.states[key] = newState
+			GPIO.output(self.outputPins[key], value)
+		else:
+			print(f'Unknown key {key}!')
+		return
 
-    async def change_light_pattern(self):
-        # TODO: Implement stop light pattern.
-        return
+	def changeButtonLightState(self, state):
+		self.changeState('buttonLight', state, state)
 
-    async def play_sound(self):
-        # TODO: Play sound through speakers.
-        return
+	def changeMotorState(self, state):
+		self.changeState('motorRelay', state, not state)
+
+	def changeTriggerState(self, state):
+		self.changeState('triggerRelay', state, not state)
+
+	def getButtonPressed(self):
+		return not GPIO.input(self.inputPins['buttonPin'])
+
+	def getMotorState(self):
+		return self.states['motorRelay']
+
+	def getTriggerState(self):
+		return self.states['triggerRelay']	
+
+	def getButtonLightState(self):
+		return self.states['buttonLight']	
+
+	def deinit(self):
+		GPIO.cleanup()
+
+	def changeLightColor(self):
+		# TODO: Implement stop light pattern.
+		return
+
+	def playSound(self):
+		# TODO: Play sound through speakers.
+		return
 
 
