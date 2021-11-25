@@ -21,6 +21,7 @@ class Game:
     def __printCurrentLight(self):
         # Swap the state, then print it.
         self.isRed = not self.isRed
+        self.gpio.changeLightColor(self.isRed)
         self.currentTimer = None
         print(f'{"Red" if self.isRed else "Green"} Light')
 
