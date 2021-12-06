@@ -1,0 +1,14 @@
+Unable to init server: Could not connect: Connection refused
+Frame: 1, Pixel Count: 307200
+Traceback (most recent call last):
+  File "objectdetect.py", line 42, in <module>
+    cv2.imshow('Frame', resizedFrame)
+cv2.error: OpenCV(4.5.4) /tmp/pip-wheel-2c57qphc/opencv-python_86774b87799240fbaa4c11c089d08cc3/opencv/modules/highgui/src/window_gtk.cpp:635: error: (-2:Unspecified error) Can't initialize GTK backend in function 'cvInitSystem'
+
+Unable to init server: Could not connect: Connection refused
+Frame: 1, Pixel Count: 307200
+Traceback (most recent call last):
+  File "objectdetect.py", line 42, in <module>
+    cv2.imshow('Frame', resizedFrame)
+cv2.error: OpenCV(4.5.4) /tmp/pip-wheel-2c57qphc/opencv-python_86774b87799240fbaa4c11c089d08cc3/opencv/modules/highgui/src/window_gtk.cpp:635: error: (-2:Unspecified error) Can't initialize GTK backend in function 'cvInitSystem'
+

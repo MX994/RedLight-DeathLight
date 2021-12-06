@@ -7,7 +7,6 @@ class GPIOInterface:
 	def __init__(self):
 		self.outputPins = {
 			'buttonLight' : 22,
-			'servo' : 19,
 		}
 		self.inputPins = {
 			'buttonPin' : 10,
@@ -16,22 +15,14 @@ class GPIOInterface:
 			'buttonLight' : False,
 			'redLight': True,
 		}
-		self.neoPixel = neopixel.NeoPixel(board.D18, 256, brightness=0.1)
 		GPIO.setmode(GPIO.BCM)
-		for pin in self.outputPins:
+		self.neoPixel = neopixel.NeoPixel(board.D18, 256, brightness=0.1)
+		self.clearNeopixel()
+		for pin in self.outputPins: 
 			GPIO.setup(self.outputPins[pin], GPIO.OUT)
 		for pin in self.inputPins:
 			GPIO.setup(self.inputPins[pin], GPIO.IN)
-		self.servo = GPIO.PWM(self.outputPins['servo'], 50)
-		self.servo.start(0)
 	
-	def setServoAngle(self, angle):
-		duty = angle / 180
-		GPIO.output(self.outputPins['servo'], True)
-		self.servo.ChangeDutyCycle(duty)
-		sleep(1)
-		GPIO.output(self.outputPins['servo'], False)
-		self.servo.ChangeDutyCycle(0)		
 
 	def changeState(self, key):
 		if key in self.states.keys():
@@ -45,7 +36,6 @@ class GPIOInterface:
 		self.changeState('buttonLight')
 
 	def getButtonPressed(self):
-		print(GPIO.input(self.inputPins['buttonPin']))
 		return GPIO.input(self.inputPins['buttonPin'])	
 
 	def getButtonLightState(self):
@@ -63,6 +53,9 @@ class GPIOInterface:
 		self.neoPixel.show()
 		return
 		
+	def clearNeopixel(self):
+		self.neoPixel.fill((0, 0, 0))
+		self.neoPixel.show()
 	def playSound(self):
 		# TODO: Play sound through speakers.
 		return

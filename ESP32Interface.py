@@ -20,9 +20,9 @@ class ESP32Communication:
     def fire(self, ntimes):
         self.check_conn()
         self.__req('toggleMotor')
-        sleep(1)
+        sleep(0.4)
         self.__req('toggleTrigger')
-        sleep(0.5 * ntimes)
+        sleep(0.2 * ntimes)
         self.__req('toggleTrigger')
         self.__req('toggleMotor')
 
